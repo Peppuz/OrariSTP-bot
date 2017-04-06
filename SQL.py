@@ -9,19 +9,17 @@
 #
 
 """ This module connects to local/remote DB and runs queries grouped in definitions """
-import requests, credentials
+import requests, credentials, json
 
-url = credentials.token
+url = credentials.link
 
 def get_citta():
-	c = requests.get(url).text
-	citta = c.split(',')
-	return citta
+	r = json.loads(requests.get(credentials.link+'s1').text)
+	return r['stop_desc']
 
 def get_destinazioni(citta):
-	c = requests.get(url).text
-	fermata = c.split(',')
-	return fermata
+	r = json.loads(requests.get(credentials.link+'s2&p='+citta))
+	return
 
 def get_timetable(p,d):
 	link = url

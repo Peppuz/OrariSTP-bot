@@ -1,11 +1,13 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# OrariSTP_bot
+# OrariSTP bot
 #
-# A Telegram Bot that provides times and stops from STP Brindisi
-# Copyright (C) 2016-2017
-# Giuseppe Vitale <peppuzvitale@gmail.com>
+# A Telegram Bot that provides times and stops for STP Brindisi
+# 2016-2017
+# Peppuz Elativ <peppuzvitale@gmail.com>
 #
+
 """ This module recieves stop_ids sends the location of the stop """
 import message_handler, SQL
 
