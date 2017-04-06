@@ -18,8 +18,8 @@ def get_citta():
 	return r['stop_desc']
 
 def get_destinazioni(citta):
-	r = json.loads(requests.get(credentials.link+'s2&p='+citta))
-	return
+	r = json.loads(requests.get(credentials.link+'s2&p='+citta).text)
+	return r['stop_desc']
 
 def get_timetable(p,d):
 	link = url
