@@ -22,30 +22,10 @@ def get_destinazioni(citta):
 	return r['stop_desc']
 
 def get_timetable(p,d):
-	link = url
-	time = requests.get(link).text
-	table = time.split(';')
-	orari = table[0].split(',')
-	trips = table[1].split(',')
-
-	orari_tab = []
-	trips_tab = []
-	x = 0
-	while (x < len(orari)):
-		if orari[x] not in orari_tab:
-			orari_tab.append(str(orari[x]))
-			trips_tab.append(str(trips[x]))
-		x+=1
-	orari_tab.pop(len(orari_tab)-1) # last val is empty
-	trips_tab.pop(len(trips_tab)-1)
-	k = [orari_tab,trips_tab]
-	return k
-
+	r = json.loads(requests.get(credentials.link+"s3&p=%s&d=%s" % (p,d)).text)
+	return r
 
 def get_fermate(p,d,t):
-	s = requests.get(url).text
-	stops = s.split('<br>')
-	p = stops[0].split(',')
-	d = stops[1].split(',')
-	a = [p,d]
-	return a
+	r = requests.get(credentials.link+"s4&p=%s&d=%s&t=%s" % (p,d,t)).text
+	r= r.split(',')
+	return r

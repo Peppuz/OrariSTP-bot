@@ -29,19 +29,12 @@ def dest(city): # dest
     return RKM(tastiera, one_time_keyboard=True)
 
 def timet(p,d): # time
-    orari = SQL.get_timetable(p,d)
-    k = []
-    l = len(orari[0])
-    x = 0
-    while x < l:
-        if(x+2 < l):
-            k+= [[ B(orari[0][x],callback_data=orari[1][x]), B(orari[0][x+1],callback_data=orari[1][x+1]), B(orari[0][x+2], callback_data=orari[1][x+2]) ]]
-        elif(x+1 < l):
-            k+= [[ B(orari[0][x],callback_data=orari[1][x]), B(orari[0][x+1],callback_data=orari[1][x+1])]]
-        elif(x < l):
-            k+= [[ B(orari[0][x],callback_data=orari[1][x]) ]]
-        x +=3
-    return k
+    data = SQL.get_timetable(p,d)
+    kb = []
+    for counter in range(len(data['orari'])):
+        kb.append( [ B( data['orari'][counter] , callback_data=data['trip_id'][counter]) ])
+        print data
+    return MK(kb)
 
 def back():
     kb = [[e.BACK_WITH_LEFTWARDS_ARROW_ABOVE]]

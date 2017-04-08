@@ -60,26 +60,26 @@ def messagehandler(b, u):
                           reply_markup=Tastiere.fermate(txt))
         elif txt == 'Chi siamo' + e.BUS_STOP.decode('utf-8'):
 
-            status[usr.id] = CHI_SIAMO
+            status[usr.id] = MENU
             print usr_stat
             message = 'Sono @Peppu, creatore del bot.\nAltri membri de SVDevTeam:\nManuel Manelli - @Vorpal97\nAlberto Carrone - @albertocrrn'
             b.sendMessage(m.chat_id, message,
                           reply_markup=Tastiere.menu())
         elif txt == 'Facebook' + e.MOBILE_PHONE.decode('utf-8'):
 
-            status[usr.id] = FACEBOOK
+            status[usr.id] = MENU
             message = 'fb.com/oraristp'
             b.sendMessage(m.chat_id, message,
                           reply_markup=Tastiere.menu())
         elif txt == 'Twitter' + e.BIRD.decode('utf-8'):
 
-            status[usr.id] = TWITTER
+            status[usr.id] = MENU
             message = 'http://twitter.com/svdevteam'
             b.sendMessage(m.chat_id, message,
                           reply_markup=Tastiere.menu())
         elif txt == 'Instagram' + e.CAMERA.decode('utf-8'):
 
-            status[usr.id] = INSTAGRAM
+            status[usr.id] = MENU
             message = 'http://instagram.com/explore/tags/oraristp/'
             b.sendMessage(m.chat_id, message,
                           reply_markup=Tastiere.menu())
@@ -112,7 +112,7 @@ def messagehandler(b, u):
 					destinazione[usr.id] = txt
 					message = 'Tutti gli orari in partenza da ' + partenza[usr.id] + ' per ' + txt +' -->'
 					b.sendMessage(m.chat_id, message,
-												reply_markup=MK(Tastiere.timet(partenza[usr.id],txt)))
+												reply_markup=Tastiere.timet(partenza[usr.id],txt))
         else:
 					b.sendMessage(m.chat_id, message,
                                                 reply_markup=Tastiere.dest(txt))
@@ -121,7 +121,6 @@ def messagehandler(b, u):
 
         # dovrebbe funzionare
     	status[usr.id] = STOP
-        print status[usr.id]
     	destinazione[usr.id] = txt
     	message = e.BUS.decode('utf-8')+' Pullman da '+partenza[usr.id]+' per '+txt+'\n'+e.BUS_STOP.decode('utf-8')\
                                                 +' Passanti per ' +destinazione[usr.id]+':\n'
