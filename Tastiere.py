@@ -20,7 +20,7 @@ def start(): # START
     cities = SQL.get_citta()
     for item in cities:
         print item
-    tastiera = [[item] for item in cities]
+    tastiera = [['Fuck']] #[[item] for item in cities]
     return RKM(tastiera, one_time_keyboard=True)
 
 def dest(city): # dest

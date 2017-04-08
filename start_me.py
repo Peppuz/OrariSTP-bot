@@ -20,16 +20,26 @@ import credentials
 bot = telegram.Bot(credentials.token)
 updater = Updater(credentials.token)
 logging.basicConfig(format='%(asctime)s - %(message)s', datefmt='%I:%M', level=logging.DEBUG)
+confirmed_id = [credentials.Peppuz]
+
+
+n = credentials.inits_number
 
 '''####################################################################################################################'''
 # Defs
 
-def start(b, u):
+def start(b,u):
 	m 			= u.message
 	usr			= m.from_user
 	message_handler.status[usr.id] = message_handler.MENU
+	print ("Init # ",n)
 	bot.sendMessage(m.chat_id, text='Ciao '+ usr.first_name+'! Questo è OrariSTP bot.'.decode('utf-8'))
-	bot.sendMessage(m.chat_id, text="Iniziamo!", reply_markup=Tastiere.menu())
+
+	if usr.id in confirmed_id:
+		bot.sendMessage(credentials.Peppuz, text='Hey, vedi che ce sto %s che ha usato il bot. Siamo a %s' % (usr.first_name,inits_number))
+		bot.sendMessage(m.chat_id, text="Iniziamo!", reply_markup=Tastiere.menu())
+	else:
+		bot.sendMessage(m.chat_id, text='Mi spiace %s, Peppuz ha detto una cerchia ristretta di utenti, magari chiedi a lui!'% usr.first_name)
 
 def cancel(b,u):
 	m 			= u.message
@@ -44,8 +54,26 @@ def vai(b,u):
 	bot.sendMessage(m.chat_id, text='Nuova ricerca! '+Emoji.BUS.decode('utf-8'), reply_markup=Tastiere.start())
 
 
+def update(b,u):
+	m 			= u.message
+	usr			= m.from_user
+	message = "Platform updated."
+	print usr.first_name + " updated"
+	if int(usr.id) == credentials.Peppuz:
+		reload(credentials)
+		reload(SQL)
+		reload(Tastiere)
+		reload(message_handler)
+		reload(callback_handler)
+		bot.sendMessage(m.chat_id, text=message)
+	
+
+
+
+
 '''####################################################################################################################'''
 # Just Main
+
 
 def main():
 	ds = updater.dispatcher
@@ -53,6 +81,7 @@ def main():
 	ds.add_handler(CommandHandler('start',start))
 	ds.add_handler(CommandHandler('cancel',cancel))
 	ds.add_handler(CommandHandler('vai', vai))
+	ds.add_handler(CommandHandler('update',update))
 	ds.add_handler(MessageHandler([Filters.text],message_handler.messagehandler))
 	ds.add_handler(CallbackQueryHandler(callback_handler.callbacking))
 
