@@ -9,7 +9,7 @@
 #
 
 """ This module recieves stop_ids sends the location of the stop """
-import message_handler, SQL
+import message_handler, SQL, Tastiere
 
 def callbacking(b,u):
 	query	= u.callback_query
@@ -27,4 +27,4 @@ def callbacking(b,u):
 		message = "Fermate in "+message_handler.partenza[usr_id]+":\n"
 		for stop in fermate:
 			message += stop + "\n"
-		b.sendMessage(chat_id, message)
+		b.sendMessage(chat_id, message, reply_markup=Tastiere.menu())

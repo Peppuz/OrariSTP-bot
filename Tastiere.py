@@ -16,11 +16,12 @@ from telegram import ReplyKeyboardMarkup as RKM
 import SQL
 from telegram import Emoji as e
 
-def start(): # START
+def start():
     cities = SQL.get_citta()
     for item in cities:
         print item
-    tastiera = [['Fuck']] #[[item] for item in cities]
+    # put all in the custom Markup and return the kb
+    tastiera = [[item] for item in cities]
     return RKM(tastiera, one_time_keyboard=True)
 
 def dest(city): # dest
@@ -29,17 +30,15 @@ def dest(city): # dest
     return RKM(tastiera, one_time_keyboard=True)
 
 def timet(p,d): # time
+    # this method returns { orari[] , trip_ids[] , validita[] } all in order
     data = SQL.get_timetable(p,d)
     kb = []
+
+    # appends to the kb array all the buttons one by one (one on top of the other)
+    # i used the trip_id as callback_data cause the bus goes in a departure city just once in a trip
     for counter in range(len(data['orari'])):
-        kb.append( [ B( data['orari'][counter] , callback_data=data['trip_id'][counter]) ])
-        print data
+        kb.append([B(data['orari'][counter] , callback_data=data['trip_id'][counter])])
     return MK(kb)
-
-def back():
-    kb = [[e.BACK_WITH_LEFTWARDS_ARROW_ABOVE]]
-    return RKM(kb, one_time_keyboard=True)
-
 def menu():
     keyboard = [[e.BUS + ' Cerca bus ' + e.BUS], ['Chi siamo'
                 + e.BUS_STOP], ['Facebook' + e.MOBILE_PHONE, 'Twitter'

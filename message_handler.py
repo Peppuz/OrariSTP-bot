@@ -19,11 +19,11 @@ from telegram import ReplyKeyboardMarkup as RKM
 from telegram import InlineKeyboardMarkup as MK
 from telegram import InlineKeyboardButton as BK
 
-(
-    MENU, # 0
-    CERCO,# 1
-    DEST, # 2
-    TIME, # 3
+# User statuses
+(    MENU,
+    CERCO,
+    DEST,
+    TIME,
     STOP,
     MAPPA,
     CHI_SIAMO,
@@ -32,6 +32,7 @@ from telegram import InlineKeyboardButton as BK
     TWITTER,
     ) = range(10)
 
+# Temporary storage for last user choices
 status = dict()
 partenza = dict()
 destinazione = dict()
@@ -53,26 +54,27 @@ def messagehandler(b, u):
             status[usr.id] = CERCO
             b.sendMessage(m.chat_id, text='Scegli il paese di partenza '
                            + e.BUS, reply_markup=Tastiere.start())
+
         elif txt in citta:
             partenza[usr.id] = txt
             b.sendMessage(m.chat_id, text=txt + ' --> '
                           + '\n Dove vuoi andare?',
                           reply_markup=Tastiere.fermate(txt))
-        elif txt == 'Chi siamo' + e.BUS_STOP.decode('utf-8'):
 
+        elif txt == 'Chi siamo' + e.BUS_STOP.decode('utf-8'):
             status[usr.id] = MENU
             print usr_stat
             message = 'Sono @Peppu, creatore del bot.\nAltri membri de SVDevTeam:\nManuel Manelli - @Vorpal97\nAlberto Carrone - @albertocrrn'
             b.sendMessage(m.chat_id, message,
                           reply_markup=Tastiere.menu())
-        elif txt == 'Facebook' + e.MOBILE_PHONE.decode('utf-8'):
 
+        elif txt == 'Facebook' + e.MOBILE_PHONE.decode('utf-8'):
             status[usr.id] = MENU
             message = 'fb.com/oraristp'
             b.sendMessage(m.chat_id, message,
                           reply_markup=Tastiere.menu())
-        elif txt == 'Twitter' + e.BIRD.decode('utf-8'):
 
+        elif txt == 'Twitter' + e.BIRD.decode('utf-8'):
             status[usr.id] = MENU
             message = 'http://twitter.com/svdevteam'
             b.sendMessage(m.chat_id, message,
@@ -87,9 +89,7 @@ def messagehandler(b, u):
             b.sendMessage(m.chat_id, "Non credo esista in provincia di Brindisi, prova tra quelle nella tastiera. ")
 
     elif usr_stat == CERCO:
-
-        # qui si modula la citta ricevuta
-
+        # Bot recieves the departure city, now i check if exist and send arrivals if true, else alert that doesnt exist
         if txt in citta:
             partenza[usr.id] = txt
             status[usr.id] = DEST
@@ -97,35 +97,30 @@ def messagehandler(b, u):
                 + "\n Scegli la citta di arrivo:"
             b.sendMessage(m.chat_id, message,
                           reply_markup=Tastiere.dest(str(txt)))
-        elif txt not in citta:
 
+        elif txt not in citta:
             b.sendMessage(m.chat_id,
                           'Non credo esista in provincia di Brindisi, prova tra quelle nella tastiera.',
                           reply_markup=Tastiere.start())
 
     elif usr_stat == DEST:
-
-        # invio destinazioni
+        # Bot recieves arrival city, check if exist again, than give him the time table
         dest = SQL.get_destinazioni(partenza[usr.id])
         if txt in dest:
-					status[usr.id] = TIME
-					destinazione[usr.id] = txt
-					message = 'Tutti gli orari in partenza da ' + partenza[usr.id] + ' per ' + txt +' -->'
-					b.sendMessage(m.chat_id, message,
-												reply_markup=Tastiere.timet(partenza[usr.id],txt))
+    		status[usr.id] = TIME
+    		destinazione[usr.id] = txt
+    		message = 'Tutti gli orari in partenza da ' + partenza[usr.id] + ' per ' + txt +' -->'
+    		b.sendMessage(m.chat_id, message, reply_markup=Tastiere.timet(partenza[usr.id],txt))
+        # if the city is typed instead and incorrectly, i give him back the last keyboard
         else:
-					b.sendMessage(m.chat_id, message,
-                                                reply_markup=Tastiere.dest(txt))
+    		b.sendMessage(m.chat_id, message,reply_markup=Tastiere.dest(txt))
 
     elif usr_stat == TIME:
-
-        # dovrebbe funzionare
     	status[usr.id] = STOP
     	destinazione[usr.id] = txt
     	message = e.BUS.decode('utf-8')+' Pullman da '+partenza[usr.id]+' per '+txt+'\n'+e.BUS_STOP.decode('utf-8')\
                                                 +' Passanti per ' +destinazione[usr.id]+':\n'
     	for orario in SQL.get_fermate():
     		message += '\n\n'+orario
-
     	b.sendMessage(m.chat_id, 'Calcolo le fermate...')
     	b.sendMessage(m.chat_id, message, reply_markup=Tastiere.menu())

@@ -14,33 +14,32 @@ from telegram.ext import (Updater, MessageHandler, Filters, CommandHandler, Call
 from telegram import (Emoji, ForceReply, InlineKeyboardButton, InlineKeyboardMarkup)
 from telegram import ReplyKeyboardMarkup as RKM
 import credentials
+import update as reloaded
 '''####################################################################################################################'''
 # Settings
 
 bot = telegram.Bot(credentials.token)
 updater = Updater(credentials.token)
 logging.basicConfig(format='%(asctime)s - %(message)s', datefmt='%I:%M', level=logging.DEBUG)
-confirmed_id = [credentials.Peppuz]
-
-
-n = credentials.inits_number
+confirmed_id = credentials.confirmed_id
 
 '''####################################################################################################################'''
 # Defs
 
-def start(b,u):
+def start(b,u): # bot,update data
 	m 			= u.message
 	usr			= m.from_user
+	# setting user status
 	message_handler.status[usr.id] = message_handler.MENU
-	print ("Init # ",n)
 	bot.sendMessage(m.chat_id, text='Ciao '+ usr.first_name+'! Questo è OrariSTP bot.'.decode('utf-8'))
-
-	if usr.id in confirmed_id:
-		bot.sendMessage(credentials.Peppuz, text='Hey, vedi che ce sto %s che ha usato il bot. Siamo a %s' % (usr.first_name,inits_number))
+	bot.sendMessage(credentials.Peppuz, usr.first_name+' ha startato')
+	# prerelease check
+	if int(usr.id) in confirmed_id:
 		bot.sendMessage(m.chat_id, text="Iniziamo!", reply_markup=Tastiere.menu())
 	else:
-		bot.sendMessage(m.chat_id, text='Mi spiace %s, Peppuz ha detto una cerchia ristretta di utenti, magari chiedi a lui!'% usr.first_name)
-
+		bot.sendMessage(m.chat_id, text='Mi spiace %s, @Peppuz ha detto una cerchia ristretta di utenti, magari chiedi a lui!'% usr.first_name)
+	# prerelease reloading
+	reloaded.reloaded()
 def cancel(b,u):
 	m 			= u.message
 	usr			= m.from_user
@@ -58,15 +57,14 @@ def update(b,u):
 	m 			= u.message
 	usr			= m.from_user
 	message = "Platform updated."
-	print usr.first_name + " updated"
-	if int(usr.id) == credentials.Peppuz:
-		reload(credentials)
-		reload(SQL)
-		reload(Tastiere)
-		reload(message_handler)
-		reload(callback_handler)
-		bot.sendMessage(m.chat_id, text=message)
-	
+	try:
+		reloaded.reloaded()
+		bot.sendMessage(m.chat_id, text='Platform updated')
+	except Exception as e:
+		bot.sendMessage(m.chat_id, text='Failed Update'
+	print usr.first_name + " updated the script"
+
+
 
 
 
@@ -79,7 +77,7 @@ def main():
 	ds = updater.dispatcher
 
 	ds.add_handler(CommandHandler('start',start))
-	ds.add_handler(CommandHandler('cancel',cancel))
+	ds.add_handler(CommandHandler('menu',cancel))
 	ds.add_handler(CommandHandler('vai', vai))
 	ds.add_handler(CommandHandler('update',update))
 	ds.add_handler(MessageHandler([Filters.text],message_handler.messagehandler))
