@@ -26,48 +26,28 @@ confirmed_id = credentials.confirmed_id
 '''####################################################################################################################'''
 # Defs
 
-def start(b,u): # bot,update data
-	m 			= u.message
-	usr			= m.from_user
-	# setting user status
-	message_handler.status[usr.id] = message_handler.MENU
-	bot.sendMessage(m.chat_id, text='Ciao '+ usr.first_name+'! Questo è OrariSTP bot.'.decode('utf-8'))
-	bot.sendMessage(credentials.Peppuz, usr.first_name+' ha startato')
-	# prerelease check
-	if int(usr.id) in confirmed_id:
-		bot.sendMessage(m.chat_id, text="Iniziamo!", reply_markup=Tastiere.menu())
-	else:
-		bot.sendMessage(m.chat_id, text='Mi spiace %s, @Peppuz ha detto una cerchia ristretta di utenti, magari chiedi a lui!'% usr.first_name)
-	# prerelease reloading
-	reloaded.reloaded()
+def start(b,u):
+    # meaning : start(bot,update_data)
+    m 			= u.message
+    usr			= m.from_user
+    # setting user status
+    message_handler.status[usr.id] = message_handler.MENU
+    bot.sendMessage(m.chat_id, text='Ciao '+ usr.first_name+'! Questo è OrariSTP bot.'.decode('utf-8'))
+    # Mi sono permesso di controllare chi ha avviato il bot per la prima volta
+    bot.sendMessage(credentials.Peppuz, '%s ha startato\n%s'%(usr.first_name,usr.username))
+    bot.sendMessage(m.chat_id, text="Iniziamo!", reply_markup=Tastiere.menu())
 def cancel(b,u):
 	m 			= u.message
 	usr			= m.from_user
 	message_handler.status[usr.id] = message_handler.MENU
 	bot.sendMessage(m.chat_id, text='Ok '+ usr.first_name+', torno al menu principale'+Emoji.BUS.decode('utf-8'), reply_markup=Tastiere.menu())
-
 def vai(b,u):
+    # CommandHandler for "/vai"
+    # Future Update: "/vai args"
 	m 			= u.message
 	usr			= m.from_user
 	message_handler.status[usr.id] = message_handler.CERCO
 	bot.sendMessage(m.chat_id, text='Nuova ricerca! '+Emoji.BUS.decode('utf-8'), reply_markup=Tastiere.start())
-
-
-def update(b,u):
-	m 			= u.message
-	usr			= m.from_user
-	message = "Platform updated."
-	try:
-		reloaded.reloaded()
-		bot.sendMessage(m.chat_id, text='Platform updated')
-	except Exception as e:
-		bot.sendMessage(m.chat_id, text='Failed Update'
-	print usr.first_name + " updated the script"
-
-
-
-
-
 
 '''####################################################################################################################'''
 # Just Main
@@ -79,7 +59,6 @@ def main():
 	ds.add_handler(CommandHandler('start',start))
 	ds.add_handler(CommandHandler('menu',cancel))
 	ds.add_handler(CommandHandler('vai', vai))
-	ds.add_handler(CommandHandler('update',update))
 	ds.add_handler(MessageHandler([Filters.text],message_handler.messagehandler))
 	ds.add_handler(CallbackQueryHandler(callback_handler.callbacking))
 

@@ -17,12 +17,14 @@ import SQL
 from telegram import Emoji as e
 
 def start():
-    cities = SQL.get_citta()
-    for item in cities:
-        print item
-    # put all in the custom Markup and return the kb
-    tastiera = [[item] for item in cities]
-    return RKM(tastiera, one_time_keyboard=True)
+    try:
+        cities = SQL.get_citta()
+        for item in cities:
+            print item
+        tastiera = [[item] for item in cities]
+        return RKM(tastiera, one_time_keyboard=True)
+    except Exception as e:
+        raise Exception(repr(e))
 
 def dest(city): # dest
     fermate = SQL.get_destinazioni(city)

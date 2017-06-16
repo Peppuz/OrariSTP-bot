@@ -14,8 +14,13 @@ import requests, credentials, json
 url = credentials.link
 
 def get_citta():
-	r = json.loads(requests.get(credentials.link+'s1').text)
-	return r['stop_desc']
+    try:
+        r = json.loads(requests.get(credentials.link+'s1').text)
+        return r['stop_desc']
+    except:
+        raise Exception('Database Offline')
+
+
 
 def get_destinazioni(citta):
 	r = json.loads(requests.get(credentials.link+'s2&p='+citta).text)
