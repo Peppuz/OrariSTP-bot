@@ -59,14 +59,13 @@ def vai(b,u):
 
 # Just Main
 def main():
-	ds = updater.dispatcher
-	ds.add_handler(CommandHandler('start',start))
-	ds.add_handler(CommandHandler('menu',cancel))
-	ds.add_handler(CommandHandler('vai', vai))
-	ds.add_handler(MessageHandler([Filters.text],message_handler.messagehandler))
-	ds.add_handler(CallbackQueryHandler(callback_handler.callbacking))
-    # Build set
-    #updater.start_polling()
+    ds = updater.dispatcher
+    ds.add_handler(CommandHandler('start',start))
+    ds.add_handler(CommandHandler('menu',cancel))
+    ds.add_handler(CommandHandler('vai', vai))
+    ds.add_handler(MessageHandler([Filters.text],message_handler.messagehandler))
+    ds.add_handler(CallbackQueryHandler(callback_handler.callbacking))
+    updater.start_polling()
 
 if __name__ == '__main__':
 	main()
