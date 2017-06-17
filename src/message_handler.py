@@ -32,7 +32,7 @@ from telegram import InlineKeyboardButton as BK
 from telegram import ReplyKeyboardHide as hide
 
 # User statuses
-(    MENU,
+(    MENU, # 0
     CERCO,
     DEST,
     TIME,
@@ -43,6 +43,8 @@ from telegram import ReplyKeyboardHide as hide
     INSTAGRAM,
     TWITTER,
     ) = range(10)
+
+
 
 # Temporary storage for last user choices
 status = dict()

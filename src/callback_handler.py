@@ -29,12 +29,13 @@ def callbacking(b,u):
         txt		= query.data # <= trip_id
         # get user status, if null set to MENU
         usr_stat= message_handler.status.get(usr_id,message_handler.MENU)
+        print usr_stat
         # Store temporary departure and arrival
         p = message_handler.partenza[usr_id]
         d = message_handler.destinazione[usr_id]
         # Request stops with json model
         fermate = SQL.get_fermate(p,d,txt)
-        if usr_stat == message_handler.STOP:
+        if usr_stat == 3:
             message_handler.status[usr_id] = message_handler.MENU
             message = "Fermate in "+message_handler.partenza[usr_id]+":\n"
             for stop in fermate:
