@@ -10,4 +10,4 @@ sudo: false
 install:
   - pip install python-telegram-bot
 # tests
-script: start_me
+script: pyton start_me.py
