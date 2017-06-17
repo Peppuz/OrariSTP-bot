@@ -35,8 +35,9 @@ def start(b,u):
     # meaning : start(bot,update_data)
     m 			= u.message
     usr			= m.from_user
+    handler     = message_handler
     # setting user status
-    message_handler.status[usr.id] = message_handler.MENU
+    handler.status[usr.id] = handler.MENU
     bot.sendMessage(m.chat_id, text='Ciao '+ usr.first_name+'! Questo è OrariSTP bot.'.decode('utf-8'))
     # Mi sono permesso di controllare chi ha avviato il bot per la prima volta
     bot.sendMessage(credentials.Peppuz, '%s ha startato\n%s'%(usr.first_name,usr.username))
@@ -44,14 +45,14 @@ def start(b,u):
 def cancel(b,u):
 	m 			= u.message
 	usr			= m.from_user
-	message_handler.status[usr.id] = message_handler.MENU
+	handler.status[usr.id] = handler.MENU
 	bot.sendMessage(m.chat_id, text='Ok '+ usr.first_name+', torno al menu principale'+Emoji.BUS.decode('utf-8'), reply_markup=Tastiere.menu())
 def vai(b,u):
     # CommandHandler for "/vai"
     # Future Update: "/vai args"
 	m 			= u.message
 	usr			= m.from_user
-	message_handler.status[usr.id] = message_handler.CERCO
+	handler.status[usr.id] = handler.CERCO
 	bot.sendMessage(m.chat_id, text='Nuova ricerca! '+Emoji.BUS.decode('utf-8'), reply_markup=Tastiere.start())
 
 '''####################################################################################################################'''
