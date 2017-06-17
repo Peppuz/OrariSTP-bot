@@ -1,0 +1,10 @@
+language: python
+# Py v.
+python:
+  - "2.6"
+  - "2.7"
+# dependencies
+install:
+  - pip install python-telegram-bot
+# tests
+script: start_me
