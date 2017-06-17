@@ -23,7 +23,6 @@ import telegram, logging, Tastiere, SQL, message_handler, callback_handler, cred
 from telegram.ext import (Updater, MessageHandler, Filters, CommandHandler, CallbackQueryHandler)
 from telegram import (Emoji, ForceReply, InlineKeyboardButton, InlineKeyboardMarkup)
 from telegram import ReplyKeyboardMarkup as RKM
-import update as reloaded
 
 # Settings
 bot = telegram.Bot(credentials.token)
@@ -66,7 +65,7 @@ def main():
 	ds.add_handler(CommandHandler('vai', vai))
 	ds.add_handler(MessageHandler([Filters.text],message_handler.messagehandler))
 	ds.add_handler(CallbackQueryHandler(callback_handler.callbacking))
-    # Build set 
+    # Build set
     #updater.start_polling()
 
 if __name__ == '__main__':
