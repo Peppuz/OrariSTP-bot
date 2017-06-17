@@ -42,30 +42,28 @@ def start(b,u):
     bot.sendMessage(credentials.Peppuz, '%s ha startato\n%s'%(usr.first_name,usr.username))
     bot.sendMessage(m.chat_id, text="Iniziamo!", reply_markup=Tastiere.menu())
 def cancel(b,u):
-	m 			= u.message
-	usr			= m.from_user
-	handler.status[usr.id] = handler.MENU
-	bot.sendMessage(m.chat_id, text='Ok '+ usr.first_name+', torno al menu principale'+Emoji.BUS.decode('utf-8'), reply_markup=Tastiere.menu())
+    m 			= u.message
+    usr			= m.from_user
+    handler     = message_handler
+    handler.status[usr.id] = handler.MENU
+    bot.sendMessage(m.chat_id, text='Ok '+ usr.first_name+', torno al menu principale'+Emoji.BUS.decode('utf-8'), reply_markup=Tastiere.menu())
 def vai(b,u):
-    # CommandHandler for "/vai"
-    # Future Update: "/vai args"
-	m 			= u.message
-	usr			= m.from_user
-	handler.status[usr.id] = handler.CERCO
-	bot.sendMessage(m.chat_id, text='Nuova ricerca! '+Emoji.BUS.decode('utf-8'), reply_markup=Tastiere.start())
-
-'''####################################################################################################################'''
-
+        # CommandHandler for "/vai"
+        # Future Update: "/vai args"
+        m = u.message
+        usr = m.from_user
+        handler = message_handler
+        handler.status[usr.id] = handler.CERCO
+        bot.sendMessage(m.chat_id, text='Nuova ricerca! '+Emoji.BUS.decode('utf-8'), reply_markup=Tastiere.start())
 
 # Just Main
 def main():
-	ds = updater.dispatcher
-	ds.add_handler(CommandHandler('start',start))
-	ds.add_handler(CommandHandler('menu',cancel))
-	ds.add_handler(CommandHandler('vai', vai))
-	ds.add_handler(MessageHandler([Filters.text],message_handler.messagehandler))
-	ds.add_handler(CallbackQueryHandler(callback_handler.callbacking))
-    # Build set
+    ds = updater.dispatcher
+    ds.add_handler(CommandHandler('start',start))
+    ds.add_handler(CommandHandler('menu',cancel))
+    ds.add_handler(CommandHandler('vai', vai))
+    ds.add_handler(MessageHandler([Filters.text],message_handler.messagehandler))
+    ds.add_handler(CallbackQueryHandler(callback_handler.callbacking))
     #updater.start_polling()
 
 if __name__ == '__main__':
