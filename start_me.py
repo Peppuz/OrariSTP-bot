@@ -29,7 +29,6 @@ import update as reloaded
 bot = telegram.Bot(credentials.token)
 updater = Updater(credentials.token)
 logging.basicConfig(format='%(asctime)s - %(message)s', datefmt='%I:%M', level=logging.DEBUG)
-confirmed_id = credentials.confirmed_id
 
 # Defs
 def start(b,u):
