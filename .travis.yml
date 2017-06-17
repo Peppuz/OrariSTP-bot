@@ -6,4 +6,4 @@ install:
   - pip install python-telegram-bot
   - pip install requests
 script:
-  python start_me.py
+  python src/start_me.py
