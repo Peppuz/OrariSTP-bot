@@ -31,8 +31,6 @@ def get_citta():
     except:
         raise Exception('Database Offline')
 
-
-
 def get_destinazioni(citta):
 	r = json.loads(requests.get(credentials.link+'s2&p='+citta).text)
 	return r['stop_desc']
