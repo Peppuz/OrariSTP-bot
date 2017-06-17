@@ -8,8 +8,15 @@ sudo: false
 
 # dependencies
 install:
+<<<<<<< HEAD
   - pip install python-telegram-bot , requests
 
 
 script:
+=======
+  - pip install python-telegram-bot
+
+# tests
+script: 
+>>>>>>> origin/dev
   python start_me.py
