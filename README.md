@@ -9,7 +9,7 @@
 From the Orari STP Project, this repo is a Telegram bot to search and view stops and times of [S.T.P. Brindisi](http://www.stpbrindisi.it/), it uses [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) wrapper,...
 
 
-The official bot is avaiable at [@OrariSTP_bot](https://t.me/OrariSTP_bot "Apri su Telegram").
+The official bot is currently (not) avaiable at [@OrariSTP_bot](https://t.me/OrariSTP_bot "Apri su Telegram").
  
  
  #### To start the bot:
